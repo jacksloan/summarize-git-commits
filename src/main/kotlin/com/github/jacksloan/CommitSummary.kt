@@ -32,9 +32,7 @@ data class Commit(
         var commit: String = "",
         var author: String = "",
         var date: OffsetDateTime = OffsetDateTime.MIN,
-        var message: String = "") {
-
-}
+        var message: String = "")
 
 data class CommitSummary(
         val author: String,
