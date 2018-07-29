@@ -87,7 +87,7 @@ fun File.parseGitLog(): ArrayList<Commit> {
         when (splitBySpace[0]) {
             "commit" -> accumulated.add(Commit(splitBySpace[1]))
             "Author:" -> accumulated.last().author = current.substring(current.indexOf("<") + 1, current.indexOf(">"))
-            "Date:" -> accumulated.last().date = current.split("Date:")[1].trim().parseGitDateString()
+            "Date:" -> accumulated.last().date = parseGitDate(current.split("Date:")[1].trim())
             else -> accumulated.last().message += current.trim()
         }
 
@@ -125,6 +125,8 @@ fun String.run(workingDir: File, targetFile: File = createTempFile()): File {
     return targetFile
 }
 
-fun String.parseGitDateString(format: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss yyyy Z")): OffsetDateTime {
-    return OffsetDateTime.parse(this, format)
+fun parseGitDate(date: String): OffsetDateTime {
+    return OffsetDateTime.parse(
+            date,
+            DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss yyyy Z"))
 }
