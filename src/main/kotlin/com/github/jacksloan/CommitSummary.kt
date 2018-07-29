@@ -55,10 +55,10 @@ fun doSummary(file: File, matchString: String): List<CommitSummary> {
  * A recursive function that walks a provided [fileOrDirectory].
  * When the [fileOrDirectory] is a git directory,
  * summarize the git messages by author using the [regexString]
- * and add the results to the [combinedMap].
+ * and add the results to the [groupedByAuthor].
  * Escape the recursion when the [depth] reaches the [maxDepth]
  */
-fun summarizeReposRecursive(fileOrDirectory: File, regexString: String, combinedMap: MutableMap<String, ArrayList<CommitSummary>>, depth: Int = 0, maxDepth: Int = 6) {
+fun summarizeReposRecursive(fileOrDirectory: File, regexString: String, groupedByAuthor: MutableMap<String, ArrayList<CommitSummary>>, depth: Int = 0, maxDepth: Int = 6) {
 
     if (depth > maxDepth || fileOrDirectory.isFile) {
         return
@@ -70,13 +70,14 @@ fun summarizeReposRecursive(fileOrDirectory: File, regexString: String, combined
         val commits = log.parseGitLog()
         val summarizedByAuthor = commits.summarizeGitMessages(regexString)
         summarizedByAuthor.forEach {
-            val list: ArrayList<CommitSummary> = combinedMap.getOrPut(it.key) { arrayListOf() }
-            list.add(it.value)
+            groupedByAuthor
+                    .getOrPut(it.key) { arrayListOf() }
+                    .add(it.value)
         }
     } else {
         // go deeper!
         fileOrDirectory.list().forEach {
-            summarizeReposRecursive(Paths.get(fileOrDirectory.absolutePath, it).toFile(), regexString, combinedMap, depth.plus(1))
+            summarizeReposRecursive(Paths.get(fileOrDirectory.absolutePath, it).toFile(), regexString, groupedByAuthor, depth.plus(1))
         }
     }
 }
