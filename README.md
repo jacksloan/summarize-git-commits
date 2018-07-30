@@ -26,7 +26,7 @@ mvn clean package
 java -jar target/git-log-1.0-SNAPSHOT-jar-with-dependencies.jar --help
 
 # with args
-java -jar target/git-log-1.0-SNAPSHOT-jar-with-dependencies.jar --parent-path C:\path\to\dir --regex-pattern d'{0,1}oh
+java -jar target/git-log-1.0-SNAPSHOT-jar-with-dependencies.jar --parent-path="C:\path\to\dir" --regex-pattern="d'{0,1}oh"
 
 # using prompts
 java -jar target/git-log-1.0-SNAPSHOT-jar-with-dependencies.jar 
