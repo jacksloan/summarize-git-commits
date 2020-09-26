@@ -30,8 +30,8 @@ fun findAllMatchingCommits(
                 commitsByCommitHash[lastCommitHash]
                         ?.message
                         ?.matches(Regex(regexMatch))
-                        ?.also { commitContainsPattern ->
-                            if (!commitContainsPattern) {
+                        ?.also { isMatch ->
+                            if (!isMatch) {
                                 commitsByCommitHash.remove(lastCommitHash)
                             }
                         }
