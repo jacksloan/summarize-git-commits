@@ -61,7 +61,7 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.github.jacksloan.CommitSummaryKt</mainClass>
+                                    <mainClass>com.github.jacksloan.CliKt</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
