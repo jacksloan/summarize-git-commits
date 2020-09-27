@@ -11,13 +11,16 @@ fun walkGitDirs(
         parentDir: File,
         action: (file: File) -> Unit
 ) {
-    if (isGitRepo(parentDir))
+    if (isGitRepo(parentDir)) {
         action(parentDir)
-    else
+    }
+
+    if (parentDir.isDirectory) {
         parentDir.list().forEach {
             walkGitDirs(
                     Paths.get(parentDir.absolutePath, it).toFile(),
                     action
             )
         }
+    }
 }
