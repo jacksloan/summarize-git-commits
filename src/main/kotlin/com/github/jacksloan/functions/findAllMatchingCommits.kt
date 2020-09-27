@@ -38,14 +38,14 @@ fun findAllMatchingCommits(
             }
 
             val lineParts = currentLine.split(regex = "\\s".toRegex(), limit = 2)
-            val lineIdentifier = lineParts[0] // "commit" | "author" | "date" | string
-            val commitIdAuthorOrDate = lineParts[1]
+            val lineIdentifier = if (lineParts.isNotEmpty()) lineParts[0] else "" // "commit" | "author" | "date" | string
+            val commitIdAuthorOrDate = if (lineParts.size >= 2) lineParts[1] else ""
 
             commitsByCommitHash[lineIdentifier] =
                     if (isNewCommitLine) Commit(commitId = commitIdAuthorOrDate)
                     else when (lineIdentifier) {
-                        "author" -> commitsByCommitHash[lineIdentifier]!!.copy(author = parseGitAuthor(commitIdAuthorOrDate))
-                        "date" -> commitsByCommitHash[lineIdentifier]!!.copy(date = parseGitDate(commitIdAuthorOrDate))
+                        "Author:" -> commitsByCommitHash[lineIdentifier]!!.copy(author = parseGitAuthor(commitIdAuthorOrDate))
+                        "Date:" -> commitsByCommitHash[lineIdentifier]!!.copy(date = parseGitDate(commitIdAuthorOrDate))
                         else -> commitsByCommitHash[lineIdentifier]!!.addToCommitBody(currentLine)
                     }
 
